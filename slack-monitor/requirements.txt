@@ -1,0 +1,4 @@
+slack-sdk>=3.26
+anthropic>=0.25
+twilio>=9.0
+python-dotenv>=1.0

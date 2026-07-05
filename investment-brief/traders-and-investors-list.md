@@ -94,3 +94,9 @@
 - Killaxbt
     - X - https://x.com/KillaXBT
     - YT - https://www.youtube.com/@KillaXBT/featured
+- Mandelbrot
+    - X - https://x.com/Wild_Randomness
+- HeadedNine
+    - X - https://x.com/HeadedNine
+- Tom Capital
+    - X - https://x.com/Tom__Capital

@@ -95,7 +95,7 @@ def post_client_digest(client, week_range):
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": f"*{comp_name}* -- {comp_domain}\n_{n_emails} email campaign(s) - {n_ads} active ad(s) this week_"
+                "text": f"*{comp_name}* -- {comp_domain}\n_{n_emails} email campaign(s) - {n_ads} top performing ad(s)_"
             }
         })
 

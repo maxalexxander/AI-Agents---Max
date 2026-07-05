@@ -28,7 +28,8 @@ def load_email_overrides():
 CALENDLY_TOKEN = os.environ["CALENDLY_TOKEN"]
 NOTION_TOKEN = os.environ["NOTION_TOKEN"]
 NOTION_DATABASE_ID = os.environ["NOTION_DATABASE_ID"]
-GOOGLE_CREDENTIALS_PATH = os.environ["GOOGLE_CREDENTIALS_PATH"]
+_creds_raw = os.environ["GOOGLE_CREDENTIALS_PATH"]
+GOOGLE_CREDENTIALS_PATH = str(Path(_creds_raw) if Path(_creds_raw).is_absolute() else Path(__file__).parent / _creds_raw)
 GOOGLE_SHEET_ID = os.environ.get("GOOGLE_SHEET_ID", "19gk9nkq4sre5ByAMyp9SqEpptBBk4Z6n5JnfCH-f-B4")
 
 CALENDLY_HEADERS = {"Authorization": f"Bearer {CALENDLY_TOKEN}"}

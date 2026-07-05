@@ -2,7 +2,7 @@
 
 You are running Skyro Digital's weekly competitor intelligence automation. Your job is to pull the past week's competitor email campaigns and Meta ads for each client, then post a polished digest to their Slack channel.
 
-**Today's context**: Run every Monday. The digest covers the previous 7 days of competitor activity.
+**Today's context**: Run every other Monday (bi-weekly). The digest covers the previous 7 days of competitor activity.
 
 ---
 
@@ -34,19 +34,13 @@ For each email kept, capture: `subject`, `sentAt`, `screenshotUrl` (if present),
 **Skip and log** if 0 emails remain after filtering -- note "No campaign emails found for [Brand]" but continue processing.
 
 ### Ads (active Meta ads)
-Use a two-step lookup:
+Use a single domain-level search -- this captures all Facebook pages linked to the domain (including persona/UGC pages):
 
-**Step 1 -- Find the Facebook page:**
-`search_advertisers(query="<domain>", search_in="domain")`
+`search_ads(query="<domain>", search_in="domain", status="active", sort_by="mostDuplicates", limit=3)`
 
-Take the `id` field from the first result. This is the Facebook page ID.
+**Important**: Use `sort_by="mostDuplicates"` -- this ranks ads by how many active copies the advertiser is running simultaneously, which is a geography-agnostic scaling signal. It works for US-only brands (where reach data is unavailable), EU brands, and multi-market brands equally. Do NOT use `sort_by="reachDelta7d"` or `trend_signal` -- those depend on EU/UK impressions data from Meta's DSA transparency database and return nothing useful for US-targeted ads.
 
-If `search_advertisers` returns no results, log "No ads found for [Brand] (not in Trendtrack)" and skip ads for this competitor.
-
-**Step 2 -- Fetch active ads:**
-`search_ads(tracked_pages=["<page_id>"], status="active", sort_by="createdAt", limit=3)`
-
-**Important**: Do NOT use `active_only=true` or the default `trend_signal` -- those apply a minimum-reach filter that silently drops ads with low or zero recent reach. Using `sort_by="createdAt"` bypasses this filter and returns all active ads.
+Do NOT use `tracked_pages` -- it scopes to a single Facebook page and misses brands that run ads across multiple persona pages.
 
 From each ad, capture: `id`, `media.type`, `media.thumbnailUrl`, `content.body`, `content.callToAction`, `content.landingPageUrl` (path only), `daysRunning`, `metrics.reachDelta7d`.
 
