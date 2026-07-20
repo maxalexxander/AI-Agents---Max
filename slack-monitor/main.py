@@ -16,6 +16,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+import certifi
 from dotenv import load_dotenv
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
@@ -23,6 +24,12 @@ from slack_sdk.errors import SlackApiError
 import classifier
 import notifier
 import state
+
+# Homebrew's OpenSSL cert bundle can be missing/empty on some machines, which
+# breaks SSL verification for the Slack API. Point at certifi's bundle
+# (already a dependency via slack_sdk/requests) so this doesn't depend on the
+# system having its own CA certs installed.
+os.environ.setdefault("SSL_CERT_FILE", certifi.where())
 
 load_dotenv(Path(__file__).parent / ".env")
 
